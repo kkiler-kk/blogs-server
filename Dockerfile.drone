@@ -1,0 +1,9 @@
+FROM harbor.oa00.com/library/alpine
+# 拷贝编译结果到当前镜像中
+COPY ./bin/server /
+# 拷贝配置文件
+COPY ./config/app.ini /data/config/app.ini
+COPY ./config/app.local.ini /data/config/app.local.ini
+COPY ./config/app.test.ini /data/config/app.test.ini
+WORKDIR /data
+ENTRYPOINT ["/server"]
