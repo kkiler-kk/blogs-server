@@ -15,8 +15,8 @@ func UploadToQiNiu(file *multipart.FileHeader, fileName string) (int, string) {
 
 	var AccessKey = "yB8r8bgYB-9E_jtV2GaUdb2d4Hc6WhRSkP7Ad6TD" // 秘钥对
 	var SerectKey = "9vvAKMY28Fm_O-W72eoSx9oLW-tcNIz611c_F-hi"
-	var Bucket = "kk-go-blogs"                          // 空间名称
-	var ImgUrl = "http://rfds9bhtt.hn-bkt.clouddn.com/" // 自定义域名或测试域名
+	var Bucket = "kk-blogs"                    // 空间名称
+	var ImgUrl = "rhewxamzm.sabkt.gdipper.com" // 自定义域名或测试域名
 
 	src, err := file.Open()
 	if err != nil {
@@ -34,7 +34,7 @@ func UploadToQiNiu(file *multipart.FileHeader, fileName string) (int, string) {
 
 	// 配置参数
 	cfg := storage.Config{
-		Zone:          &storage.ZoneHuanan, // 华南区
+		Zone:          &storage.Zone_na0, // 华南区
 		UseCdnDomains: false,
 		UseHTTPS:      false, // 非https
 	}

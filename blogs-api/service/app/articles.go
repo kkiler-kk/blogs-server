@@ -31,11 +31,14 @@ type Search struct {
 }
 
 // ListActivity @Title 获取文章列表
-func (*activityLogic) ListActivity(args ArgsArticlesReq, page bean.Page, search Search) (result []reponse.Articles, total int64, err error) {
+func (*activityLogic) ListActivity(args ArgsArticlesReq, page bean.Page, search Search, articles []int) (result []reponse.Articles, total int64, err error) {
 	categoryId, _ := strconv.ParseInt(args.CategoryId, 10, 64)
 	tagId, _ := strconv.ParseInt(args.TagId, 10, 64)
 	var activitys []model.Article
 	where := mysql.Db
+	if articles != nil && len(articles) > 0 {
+		where = where.Where("id in ?", articles)
+	}
 	if categoryId != 0 {
 		where = where.Where("category_id = ?", categoryId)
 	}
@@ -73,6 +76,8 @@ func (*activityLogic) ListActivity(args ArgsArticlesReq, page bean.Page, search 
 				activityIds = append(activityIds, activity.Id)
 			}
 		}
+
+		// 查询文章喜欢人数
 		// 查询标签列表
 		if mysql.Db.Preload("Tag").Where("article_id in ?", activityIds).Find(&tags).Error != nil {
 			return result, total, errors.New("系统繁忙")
@@ -91,6 +96,7 @@ func (*activityLogic) ListActivity(args ArgsArticlesReq, page bean.Page, search 
 				Title:         activity.Title,
 				Summary:       activity.Summary,
 				CommentCounts: activity.CommentCounts,
+				LikeCount:     activity.LikeCounts,
 				ViewCount:     activity.ViewCounts,
 				Weight:        activity.Weight,
 				CreateDate:    activity.CreatedAt.Format("2006-01-02 15:04"),
@@ -149,6 +155,9 @@ func (l *activityLogic) ArticlesView(articlesId int64) (result reponse.ArticlesV
 	commentCountKey := fmt.Sprintf("%s%d", bean.CommentCount, articlesId)
 	viewCount, _ := redis.Redis.Get(viewCountKey).Int()
 	commentCount, _ := redis.Redis.Get(commentCountKey).Int()
+	// 查询收藏量
+	count := GoodLogic.GetArticlesGoodCount(articlesId)
+
 	result = reponse.ArticlesView{
 		Id:            articles.Id,
 		Title:         articles.Title,
@@ -156,6 +165,8 @@ func (l *activityLogic) ArticlesView(articlesId int64) (result reponse.ArticlesV
 		CommentCounts: uint(commentCount),
 		ViewCount:     uint(viewCount),
 		Weight:        articles.Weight,
+		GoodCount:     uint(count),
+		LikeCount:     articles.LikeCounts,
 		CreateDate:    articles.CreatedAt.Format("2006-01-02 15:04"),
 		Author: reponse.SysUser{
 			Id:       articles.User.Id,

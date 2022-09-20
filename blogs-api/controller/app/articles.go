@@ -19,7 +19,7 @@ func (*Articles) ListArticles(c *gin.Context) {
 		bean.Response.ResultFail(c, -101, common.GetVerErr(err))
 		return
 	}
-	result, _, err := app.ActivityLogic.ListActivity(args, args.Page, args.Search)
+	result, _, err := app.ActivityLogic.ListActivity(args, args.Page, args.Search, nil)
 	if err != nil {
 		bean.Response.ResultFail(c, -102, common.GetVerErr(err))
 		return

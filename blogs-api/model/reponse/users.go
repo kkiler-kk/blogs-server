@@ -8,7 +8,7 @@ type UserRep struct {
 	Signature string `json:"signature"`
 }
 type UserInfoRep struct {
-	Id        string `json:"id"`
+	Id        int64  `json:"id"`
 	Account   string `json:"account"`
 	NikeName  string `json:"nikeName"`
 	Avatar    string `json:"avatar"`

@@ -8,12 +8,12 @@ require (
 	git.oa00.com/go/redis v1.0.0
 	github.com/gin-gonic/gin v1.8.1
 	github.com/go-playground/validator/v10 v10.10.0
+	github.com/robfig/cron/v3 v3.0.0
 	gopkg.in/ini.v1 v1.63.0
 	gorm.io/gorm v1.23.6
 )
 
 require (
-	github.com/robfig/cron/v3 v3.0.0 // indirect
 	golang.org/x/sync v0.0.0-20201207232520-09787c993a3a // indirect
 	golang.org/x/sys v0.0.0-20211020174200-9d6173849985 // indirect
 )

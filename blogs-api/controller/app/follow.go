@@ -28,8 +28,8 @@ type argsFollowAddReq struct {
 	FollowId int64 `binding:"required"`
 }
 
-// Follow @Title 关注
-func (f Follow) Follow(c *gin.Context) {
+// AddFollow @Title 关注
+func (f Follow) AddFollow(c *gin.Context) {
 	user := bean.Storage.Get().(reponse.LoginUser)
 	args := argsFollowAddReq{}
 	if err := c.ShouldBind(&args); err != nil {
@@ -37,6 +37,22 @@ func (f Follow) Follow(c *gin.Context) {
 		return
 	}
 	err := app.FollowLogic.FollowAdd(args.FollowId, user.Id)
+	if err != nil {
+		bean.Response.ResultFail(c, -102, common.GetVerErr(err))
+		return
+	}
+	bean.Response.ResultSuc(c, nil)
+}
+
+// RemoveFollow @Title 取消关注
+func (f Follow) RemoveFollow(c *gin.Context) {
+	user := bean.Storage.Get().(reponse.LoginUser)
+	args := argsFollowAddReq{}
+	if err := c.ShouldBind(&args); err != nil {
+		bean.Response.ResultFail(c, -101, common.GetVerErr(err))
+		return
+	}
+	err := app.FollowLogic.FollowRemove(args.FollowId, user.Id)
 	if err != nil {
 		bean.Response.ResultFail(c, -102, common.GetVerErr(err))
 		return

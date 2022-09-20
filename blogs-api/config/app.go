@@ -12,12 +12,13 @@ import (
 var Config = &App{}
 
 type App struct {
-	Page   Page   `ini:"page"`
-	Mysql  MySQL  `ini:"mysql"`
-	Server Server `ini:"server"`
-	Debug  bool   `ini:"debug"`
-	Redis  Redis  `ini:"redis"`
-	Upload Upload `ini:"upload"`
+	Page     Page     `ini:"page"`
+	Mysql    MySQL    `ini:"mysql"`
+	Server   Server   `ini:"server"`
+	Debug    bool     `ini:"debug"`
+	Redis    Redis    `ini:"redis"`
+	Upload   Upload   `ini:"upload"`
+	QiNiuYun QiNiuYun `ini:"qiNiuYun"`
 }
 type IniConfig struct {
 	ConfigPath       string

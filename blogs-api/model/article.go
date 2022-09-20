@@ -18,6 +18,7 @@ type Article struct {
 	Title         string    // 标题
 	ViewCounts    uint      // 浏览数量
 	Weight        uint      // 是否置顶
+	LikeCounts    uint      // 点赞人数
 	AuthorId      int64     // 作者id
 	User          SysUser   `gorm:"foreignKey:AuthorId"`
 	BodyId        int64     // 内容Id

@@ -40,6 +40,7 @@ func (l userLogic) GetUserInfo(userId int64) (result reponse.UserInfoRep, err er
 		return result, errors.New("系统繁忙, 稍后重试")
 	}
 	result = reponse.UserInfoRep{
+		Id:        user.Id,
 		Account:   user.Account,
 		NikeName:  user.NickName,
 		Avatar:    user.Avatar,
@@ -72,6 +73,7 @@ func (l userLogic) ChangePwd(userId int64, oldPassword, newPassword string) erro
 }
 
 type ArgsUserInfoReq struct {
+	Password  string
 	NikeName  string
 	Avatar    string
 	Signature string
@@ -84,6 +86,12 @@ type ArgsUserInfoReq struct {
 // EditInfo @Title 修改资料
 func (l userLogic) EditInfo(userId int64, args ArgsUserInfoReq) error {
 	var user = model.SysUser{
+		Id: userId,
+	}
+	if mysql.Db.Model(&user).Where("id = ?", userId).First(&user).Error != nil {
+		return errors.New("更新失败")
+	}
+	var newUser = model.SysUser{
 		Id:        userId,
 		Avatar:    args.Avatar,
 		Signature: args.Signature,
@@ -92,8 +100,9 @@ func (l userLogic) EditInfo(userId int64, args ArgsUserInfoReq) error {
 		Email:     args.Email,
 		Phone:     args.Phone,
 		NickName:  args.NikeName,
+		Password:  common.GetPassword(args.Password, user.Salt),
 	}
-	if mysql.Db.Model(&user).Updates(&user).RowsAffected <= 0 {
+	if mysql.Db.Model(&newUser).Updates(&newUser).RowsAffected <= 0 {
 		return errors.New("更新失败")
 	}
 	return nil

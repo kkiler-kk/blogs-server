@@ -50,6 +50,7 @@ func initApp() (closes []func()) {
 	} else {
 		log.Println("redis pong ", pong)
 	}
+	// 初始化七牛云
 
 	// 初始化数据库
 	if err := mysql.InitMysql(&mysql.DbConfig{

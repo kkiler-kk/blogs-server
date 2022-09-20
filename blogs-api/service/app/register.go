@@ -19,12 +19,12 @@ type registerLogic struct {
 }
 
 // Register @Title 注册
-func (*registerLogic) Register(account, avatar, name, password string) (token string, err error) {
+func (*registerLogic) Register(account, name, password string) (token string, err error) {
 	salt := common.RandStr(6)
 	password = common.GetPassword(password, salt)
 	var user = model.SysUser{Account: account, NickName: name,
 		Password: password, LastLogin: time.Now(), Salt: salt,
-		Avatar: avatar, BirthDate: time.Now(),
+		Avatar: "require(@/assets/img/default_avatar.png)", BirthDate: time.Now(),
 	}
 	erro := mysql.Db.Transaction(func(tx *gorm.DB) error {
 		if tx.Create(&user).RowsAffected <= 0 {

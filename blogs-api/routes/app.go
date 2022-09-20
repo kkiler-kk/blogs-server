@@ -20,6 +20,7 @@ func AppRoute(router *gin.RouterGroup) {
 		router.POST("login", loginController.Login)  // 登录
 		router.GET("logout", loginController.Logout) // 退出登录
 	}
+
 	uploadRouter := app.Upload{}
 	{
 		router.POST("upload", uploadRouter.ImagesUpload) // 图片文件上传
@@ -43,6 +44,21 @@ func AppRoute(router *gin.RouterGroup) {
 			tagRouter.GET("detail/:id", tagController.DetailId) // 查询标签 根据id
 		}
 	}
+	goodRouter := router.Group("collect")
+	{
+		goodController := app.Good{}
+		{
+			goodRouter.POST("/user/:id", goodController.GetGoodByUserId) // 根据用户id查询他的收藏
+			goodRouter.POST("/is/collect", goodController.IsGood)        // 根据文章id 用户id 查看是否有没有收藏此文章
+		}
+	}
+	likeRouter := router.Group("like")
+	{
+		likeController := app.Like{}
+		{
+			likeRouter.POST("/is/like", likeController.IsLike) // 根据文章id 用户id 查看是否有没有收藏此喜欢
+		}
+	}
 	usersRouter := router.Group("users")
 	{
 		usersController := app.Users{}
@@ -59,11 +75,12 @@ func AppRoute(router *gin.RouterGroup) {
 	{
 		followController := app.Follow{}
 		{
-			followRouter.POST("", appAuth, followController.Follow)    // 添加关注
-			followRouter.POST(":id", followController.GetUserFollow)   // 获取关注数 粉丝数
-			followRouter.POST("is/follow", followController.IsFollow)  // 查看是否被关注
-			followRouter.POST("follow/:id", followController.MyFollow) // 查看关注
-			followRouter.POST("fans/:id", followController.MyFans)     // 查看粉丝
+			followRouter.POST("add", appAuth, followController.AddFollow)       // 添加关注
+			followRouter.POST("remove", appAuth, followController.RemoveFollow) // 取消关注
+			followRouter.POST(":id", followController.GetUserFollow)            // 获取关注数 粉丝数
+			followRouter.POST("is/follow", followController.IsFollow)           // 查看是否被关注
+			followRouter.POST("follow/:id", followController.MyFollow)          // 查看关注
+			followRouter.POST("fans/:id", followController.MyFans)              // 查看粉丝
 		}
 	}
 	// 文章路由

@@ -6,6 +6,7 @@ type Articles struct {
 	Summary       string       `json:"summary"`
 	CommentCounts uint         `json:"commentCounts"`
 	ViewCount     uint         `json:"viewCount"`
+	LikeCount     uint         `json:"likeCount"`
 	Weight        uint         `json:"weight"`
 	CreateDate    string       `json:"createDate"`
 	Author        string       `json:"author"`
@@ -28,6 +29,8 @@ type ArticlesView struct {
 	CommentCounts uint         `json:"commentCounts"`
 	ViewCount     uint         `json:"viewCounts"`
 	Weight        uint         `json:"weight"`
+	LikeCount     uint         `json:"likeCount"`
+	GoodCount     uint         `json:"goodCount"`
 	CreateDate    string       `json:"createDate"`
 	Author        SysUser      `json:"author"`
 	ActivityBody  ActivityBody `json:"body"`

@@ -77,3 +77,14 @@ func (l followLogic) MyFans(userId int64) (result []reponse.UserRep, err error) 
 	}
 	return
 }
+
+// FollowRemove @Title 取消关注
+func (l followLogic) FollowRemove(followId int64, fansId int64) error {
+	var follow = model.UserFollow{FollowId: int(followId), UserId: int(fansId)}
+	return mysql.Db.Transaction(func(tx *gorm.DB) error {
+		if tx.Where("follow_id = ? and user_id = ?", followId, fansId).Delete(&follow).RowsAffected <= 0 {
+			return errors.New("稍后重试")
+		}
+		return nil
+	})
+}
