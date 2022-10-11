@@ -145,7 +145,7 @@ func (l userLogic) MyArticle(userId int) (result []reponse.Articles, err error) 
 			CommentCounts: activity.CommentCounts,
 			ViewCount:     activity.ViewCounts,
 			Weight:        activity.Weight,
-			CreateDate:    activity.CreatedAt.Format("2006-01-02 15:04"),
+			CreateDate:    activity.CreatedAt.UnixNano() / 1e6,
 			Author:        activity.User.NickName,
 			Tags:          mapTag[activity.Id],
 		})

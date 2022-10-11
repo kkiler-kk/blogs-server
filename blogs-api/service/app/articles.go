@@ -99,7 +99,7 @@ func (*activityLogic) ListActivity(args ArgsArticlesReq, page bean.Page, search 
 				LikeCount:     activity.LikeCounts,
 				ViewCount:     activity.ViewCounts,
 				Weight:        activity.Weight,
-				CreateDate:    activity.CreatedAt.Format("2006-01-02 15:04"),
+				CreateDate:    activity.CreatedAt.Unix(),
 				Author:        activity.User.NickName,
 				Tags:          mapTag[activity.Id],
 			})

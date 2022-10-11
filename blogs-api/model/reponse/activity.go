@@ -8,7 +8,7 @@ type Articles struct {
 	ViewCount     uint         `json:"viewCount"`
 	LikeCount     uint         `json:"likeCount"`
 	Weight        uint         `json:"weight"`
-	CreateDate    string       `json:"createDate"`
+	CreateDate    int64        `json:"createDate"`
 	Author        string       `json:"author"`
 	ActivityBody  ActivityBody `json:"body"`
 	Tags          []ListTag    `json:"tags"`

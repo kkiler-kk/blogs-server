@@ -8,6 +8,7 @@ require (
 	git.oa00.com/go/redis v1.0.0
 	github.com/gin-gonic/gin v1.8.1
 	github.com/go-playground/validator/v10 v10.10.0
+	github.com/gorilla/websocket v1.5.0
 	github.com/robfig/cron/v3 v3.0.0
 	gopkg.in/ini.v1 v1.63.0
 	gorm.io/gorm v1.23.6

@@ -20,14 +20,13 @@ func AppRoute(router *gin.RouterGroup) {
 		router.POST("login", loginController.Login)  // 登录
 		router.GET("logout", loginController.Logout) // 退出登录
 	}
-
+	messageRouter := app.Message{}
+	{
+		router.GET("ws", messageRouter.WsHandle)
+	}
 	uploadRouter := app.Upload{}
 	{
 		router.POST("upload", uploadRouter.ImagesUpload) // 图片文件上传
-	}
-	categoryRouter := app.Category{}
-	{
-		router.GET("categorys", categoryRouter.ListCategory) // 查询所有分类
 	}
 	registerController := app.Register{}
 	{
@@ -44,6 +43,7 @@ func AppRoute(router *gin.RouterGroup) {
 			tagRouter.GET("detail/:id", tagController.DetailId) // 查询标签 根据id
 		}
 	}
+	// 收藏
 	goodRouter := router.Group("collect")
 	{
 		goodController := app.Good{}
@@ -52,6 +52,7 @@ func AppRoute(router *gin.RouterGroup) {
 			goodRouter.POST("/is/collect", goodController.IsGood)        // 根据文章id 用户id 查看是否有没有收藏此文章
 		}
 	}
+	// 点赞
 	likeRouter := router.Group("like")
 	{
 		likeController := app.Like{}
@@ -59,6 +60,7 @@ func AppRoute(router *gin.RouterGroup) {
 			likeRouter.POST("/is/like", likeController.IsLike) // 根据文章id 用户id 查看是否有没有收藏此喜欢
 		}
 	}
+	// 用户
 	usersRouter := router.Group("users")
 	{
 		usersController := app.Users{}
@@ -71,6 +73,7 @@ func AppRoute(router *gin.RouterGroup) {
 			usersRouter.POST("article/:id", usersController.MyArticle)         // 查询用户文章
 		}
 	}
+	// 关注
 	followRouter := router.Group("follow")
 	{
 		followController := app.Follow{}
@@ -98,14 +101,17 @@ func AppRoute(router *gin.RouterGroup) {
 			articlesRouter.POST("search", articlesController.Search)             // 搜索文章
 		}
 	}
+	// 分类
 	categorysRouter := router.Group("categorys")
 	{
 		categorysController := app.Category{}
 		{
+			categorysRouter.GET("", categorysController.ListCategory)       // 查询所有分类
 			categorysRouter.GET("detail", categorysController.Detail)       // 查询所有文章分类
 			categorysRouter.GET("detail/:id", categorysController.DetailId) // 查询所有文章分类
 		}
 	}
+	// 评论
 	commentRouter := router.Group("comments")
 	{
 		commentController := app.Comments{}
